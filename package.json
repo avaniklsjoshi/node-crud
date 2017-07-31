@@ -1,0 +1,26 @@
+{
+  "name": "node-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avaniklsjoshi/node-crud.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avaniklsjoshi/node-crud/issues"
+  },
+  "homepage": "https://github.com/avaniklsjoshi/node-crud#readme",
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.3",
+    "express-ejs-layouts": "^2.3.1",
+    "mongoose": "^4.11.5"
+  }
+}
