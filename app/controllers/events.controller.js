@@ -39,7 +39,10 @@ function showEvents(req,res){
       }
 
        // return a view with data
-      res.render('pages/events',{events:events});
+      res.render('pages/events',{
+        events:events,
+        success:req.flash('success')
+      });
     });   
 }
 /**
@@ -54,6 +57,7 @@ function seedEvents(req,res){
     {name:              'Ping Pong',description:     'super fast ball.'}
 
   ];
+
 
   // use the event model to insert/save, but firt empty it.
   Event.remove({},() => {
