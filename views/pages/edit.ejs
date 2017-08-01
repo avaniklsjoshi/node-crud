@@ -1,0 +1,33 @@
+<div class="junbotron text-center">
+  <h1>Editing <%= event.name %></h1>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    
+    <% if(errors.length>0){ %>
+      <div class="alert alert-danger">
+        <% for(error of errors){ %>
+          <%= error %><br>
+        <% } %>
+      </div>
+    <% } %>
+     
+    <form action="/events/<%= event.slug %>" method="POST">
+      
+      <div class="form-group">
+        <label for="">Name</label>
+        <input type="text" name="name" class="form-control" value="<%= event.name %>">
+      </div>
+
+      <div class="form-group">
+        <label for="">description</label>
+        <textarea name="description" cols="30" rows="5" class="form-control" value="<%= event.description %>"></textarea>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-lg btn-success" >Update</button>
+      </div>
+
+    </form>
+  </div>
+</div>
