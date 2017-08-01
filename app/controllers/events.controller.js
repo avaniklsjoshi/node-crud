@@ -3,15 +3,22 @@ const Event=require('../models/event');
 module.exports={
   showEvents:showEvents,
   showSingle:showSingle,
-  seedEvents:seedEvents
+  seedEvents:seedEvents,
+  showCreate:showCreate,
+  processCreate:processCreate
 };
 
 /**
  * show single event
  */
 function showSingle(req, res){
-  const event= {name:'Basketball', slug:'basketball',description:'Throwing into a basket.'};
-  res.render('pages/single',{event:event});
+  Event.findOne({slug:req.params.slug},(err,event)=>{
+    if(err){
+        res.status(404);
+        res.send('Event not found');
+      }
+    res.render('pages/single',{event:event});
+  });
 }
 
 /**
@@ -20,9 +27,15 @@ function showSingle(req, res){
 function showEvents(req,res){
      
     // get all events
-    
-    // return a view with data
-    res.render('pages/events',{events:events});
+    Event.find({},(err,events)=>{
+      if(err){
+        res.status(404);
+        res.send('Events not found');
+      }
+
+       // return a view with data
+      res.render('pages/events',{events:events});
+    });   
 }
 /**
  * seed our db
@@ -48,4 +61,30 @@ function seedEvents(req,res){
 
   //seeded!
   res.send('db seeded!')
+}
+
+/**
+ * ShowCreate
+ */
+function showCreate(req, res){
+  res.render('pages/create');
+}
+
+/**
+ * processCreate
+ */
+function processCreate(req, res){
+  // create a new event
+  const event=new Event({
+    name:req.body.name,   //bcoz of bodyparser we are able access this here
+    description:req.body.description
+  });
+
+  // save event
+  event.save((err)=>{
+    if(err)
+      throw err;
+    //redirect to the newly created form
+    res.redirect(`/events/${event.slug}`);
+  });
 }
