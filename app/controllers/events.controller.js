@@ -17,7 +17,10 @@ function showSingle(req, res){
         res.status(404);
         res.send('Event not found');
       }
-    res.render('pages/single',{event:event});
+    res.render('pages/single',{
+      event:event,
+      success:req.flash('success')    //comming from session
+    });
   });
 }
 
@@ -67,13 +70,26 @@ function seedEvents(req,res){
  * ShowCreate
  */
 function showCreate(req, res){
-  res.render('pages/create');
+  res.render('pages/create',{
+    errors:req.flash('errors')
+  });
 }
 
 /**
  * processCreate
  */
 function processCreate(req, res){
+  // validate info
+  req.checkBody('name', 'Name is required.').notEmpty();  //you can also use req.checkParam() if data is coming from url
+  req.checkBody('Description', 'Description is required.').notEmpty(); 
+
+  //if there are errors, redirect and save errors to flash
+  const errors=req.validationErrors();
+  if(errors){
+    req.flash('errors', errors.map(err=>err.msg));
+    return res.redirect('/events/create');
+  }
+  
   // create a new event
   const event=new Event({
     name:req.body.name,   //bcoz of bodyparser we are able access this here
@@ -84,6 +100,8 @@ function processCreate(req, res){
   event.save((err)=>{
     if(err)
       throw err;
+    //set a suucessful flash message
+    req.flash('success', 'Successfully created the event!');    //added to session
     //redirect to the newly created form
     res.redirect(`/events/${event.slug}`);
   });
